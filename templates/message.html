@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set active = 'inbox' %}
+{% block content %}
+<section class="mailview">
+  <a href="/inbox" class="back">&larr; do skrzynki</a>
+
+  <article class="card email">
+    <header class="email-head">
+      <div class="from">{{ c.sender_name }}</div>
+      <h2 class="email-subj">{{ c.subject }}</h2>
+    </header>
+
+    <div class="mailbody">{% set parts = c.body.split('{link}') %}
+{%- for part in parts -%}
+{{ part }}
+{%- if not loop.last -%}
+{% if c.status == 'pending' %}<a class="phish-link" href="/t/{{ c.token }}">{{ c.link_label }}</a>{% else %}<span class="phish-link dead">{{ c.link_label }}</span>{% endif %}
+{%- endif -%}
+{%- endfor -%}
+{%- if parts|length == 1 %}
+
+{% if c.status == 'pending' %}<a class="phish-link" href="/t/{{ c.token }}">{{ c.link_label }}</a>{% else %}<span class="phish-link dead">{{ c.link_label }}</span>{% endif %}{% endif %}</div>
+  </article>
+
+  {% if c.status == 'pending' %}
+    <form method="post" action="/report/{{ c.id }}" class="report-bar">
+      <p>Wyglada podejrzanie? Jesli to phishing — zglos, zanim klikniesz w link.</p>
+      <button class="btn defend-btn">To jest phishing</button>
+    </form>
+  {% elif c.status == 'reported' %}
+    <div class="verdict good">Zgloszono jako phishing — punkt dla Ciebie (obrona).</div>
+  {% else %}
+    <div class="verdict bad">Kliknieto w link — punkt powedrowal do nadawcy.
+       {% if s %}Scenariusz: {{ s.nazwa }}.{% endif %}</div>
+  {% endif %}
+</section>
+{% endblock %}

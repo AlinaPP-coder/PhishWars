@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% set active = 'compose' %}
+{% block content %}
+<div class="compose-grid">
+  <section class="card">
+    <h2 class="attack-head">Zaprojektuj atak</h2>
+
+    <div class="scn-picker">
+      {% for key, nazwa in scenariusze %}
+        <a href="/compose?scenario={{ key }}"
+           class="chip {{ 'chip-on' if key == wybrany }}">{{ nazwa }}</a>
+      {% endfor %}
+    </div>
+
+    <form method="post" action="/compose" class="mailform">
+      <input type="hidden" name="scenario" value="{{ wybrany }}">
+
+      <label>Cel (komu wysylasz)
+        <select name="target_id" required>
+          {% for c in cele %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+          {% else %}
+            <option disabled>Brak innych graczy w pokoju</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>Nazwa nadawcy (wyswietlana ofierze)
+        <input name="sender_name" value="{{ s.przyklad_nadawca }}" placeholder="np. Ksiegowosc">
+      </label>
+
+      <label>Temat
+        <input name="subject" value="{{ s.przyklad_temat }}" placeholder="chwytliwy temat">
+      </label>
+
+      <label>Tresc maila
+        <textarea name="body" rows="8" placeholder="Napisz tresc. Wstaw {link} tam, gdzie ma byc przycisk z linkiem.">Dzien dobry,
+
+{% if wybrany == 'open' %}{% else %}{{ s.wskazowki[0] }}
+
+{% endif %}Prosimy o potwierdzenie: {link}
+
+Z powazaniem,
+{{ s.przyklad_nadawca }}</textarea>
+      </label>
+
+      <label>Napis na przycisku-linku
+        <input name="link_label" value="{{ s.przyklad_label }}" placeholder="np. Oplac doplate">
+      </label>
+
+      <p class="hint-inline">Uzyj <code>{link}</code> w tresci — zostanie zamienione na klikalny przycisk.
+         Jesli go nie wstawisz, przycisk pojawi sie na koncu maila.</p>
+
+      <button class="btn attack-btn">Wyslij wyzwanie</button>
+    </form>
+  </section>
+
+  <aside class="card tips">
+    <h3>Scenariusz: {{ s.nazwa }}</h3>
+    <p class="muted">{{ s.opis }}</p>
+
+    <h4>Wskazowki do tego scenariusza</h4>
+    <ul>
+      {% for w in s.wskazowki %}<li>{{ w }}</li>{% endfor %}
+    </ul>
+
+    <h4>Dzwignie perswazji</h4>
+    <ul class="levers">
+      {% for nazwa, opis in dzwignie %}
+        <li><b>{{ nazwa }}</b> — {{ opis }}</li>
+      {% endfor %}
+    </ul>
+    <p class="muted small">Zmiana scenariusza nadpisze pola przykladowymi wartosciami.</p>
+  </aside>
+</div>
+{% endblock %}

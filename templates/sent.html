@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% set active = 'sent' %}
+{% block head %}<meta http-equiv="refresh" content="6">{% endblock %}
+{% block content %}
+<section class="list-wrap">
+  <h2>Wyslane wyzwania</h2>
+  <p class="muted">Sledz, czy cel kliknal, czy wykryl podstep.</p>
+
+  <div class="maillist">
+    {% for m in wyslane %}
+      <div class="mailrow static">
+        <span class="sender">do: {{ m.target_name }}</span>
+        <span class="subj">{{ m.subject }}</span>
+        <span class="status s-{{ m.status }}">
+          {% if m.status == 'pending' %}czeka
+          {% elif m.status == 'clicked' %}+10 trafienie
+          {% else %}wykryte{% endif %}
+        </span>
+      </div>
+    {% else %}
+      <p class="empty">Nic jeszcze nie wyslales. Przejdz do „Nowy atak".</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

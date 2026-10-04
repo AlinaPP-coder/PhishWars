@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block head %}{% endblock %}
+  <title>PhishWars</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  {% if player %}
+  <header class="topbar">
+    <a href="/inbox" class="brand">Phish<span>Wars</span></a>
+    <nav>
+      <a href="/inbox" class="{{ 'on' if active=='inbox' }}">Skrzynka</a>
+      <a href="/compose" class="{{ 'on' if active=='compose' }}">Nowy atak</a>
+      <a href="/sent" class="{{ 'on' if active=='sent' }}">Wyslane</a>
+      <a href="/leaderboard" class="{{ 'on' if active=='board' }}">Ranking</a>
+    </nav>
+    <div class="who">
+      <span class="room">pokoj <b>{{ room.code }}</b></span>
+      <span class="me">{{ player.name }}</span>
+      <a href="/logout" class="logout">wyjdz</a>
+    </div>
+  </header>
+  {% endif %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

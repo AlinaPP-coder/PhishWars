@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% set active = 'inbox' %}
+{% block head %}<meta http-equiv="refresh" content="6">{% endblock %}
+{% block content %}
+<section class="list-wrap">
+  <h2>Skrzynka odbiorcza</h2>
+  <p class="muted">Ktos probuje Cie nabrac. Rozpoznaj phishing zanim klikniesz — za wykrycie
+     dostajesz punkt, za klikniecie punkt dostaje nadawca.</p>
+
+  <div class="maillist">
+    {% for m in wiadomosci %}
+      <a class="mailrow {{ 'done' if m.status != 'pending' }}" href="/m/{{ m.id }}">
+        <span class="sender">{{ m.sender_name }}</span>
+        <span class="subj">{{ m.subject }}</span>
+        <span class="status s-{{ m.status }}">
+          {% if m.status == 'pending' %}nowa
+          {% elif m.status == 'clicked' %}klikniete
+          {% else %}zgloszone{% endif %}
+        </span>
+      </a>
+    {% else %}
+      <p class="empty">Pusto. Przejdz do „Nowy atak" i rzuc komus wyzwanie.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

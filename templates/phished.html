@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="phished">
+  <div class="card gotcha">
+    {% if zaliczone %}
+      <div class="gotcha-badge">Dałeś się nabrać</div>
+      <h1>To byl phishing.</h1>
+      <p>Kliknales w link w mailu „{{ c.subject }}". W prawdziwym ataku w tym momencie
+         Twoje dane albo pieniadze bylyby juz zagrozone. Punkt powedrowal do nadawcy.</p>
+    {% else %}
+      <div class="gotcha-badge neutral">Link juz rozstrzygniety</div>
+      <h1>To wyzwanie bylo juz domkniete.</h1>
+      <p>Punkt zostal przyznany wczesniej — nie zalicza sie go drugi raz.</p>
+    {% endif %}
+
+    {% if s %}
+    <div class="lesson">
+      <h3>Czego nie zauwazyles</h3>
+      <p class="muted">Scenariusz: <b>{{ s.nazwa }}</b> — {{ s.opis }}</p>
+      <ul>
+        {% for nazwa, opis in dzwignie %}<li><b>{{ nazwa }}</b> — {{ opis }}</li>{% endfor %}
+      </ul>
+      <p class="muted small">Nastepnym razem: sprawdz nadawce, najedz na link przed kliknieciem,
+         nie dzialaj pod presja czasu.</p>
+    </div>
+    {% endif %}
+
+    {% if player %}<a href="/inbox" class="btn">Wroc do skrzynki</a>{% endif %}
+  </div>
+</section>
+{% endblock %}

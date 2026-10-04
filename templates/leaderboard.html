@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% set active = 'board' %}
+{% block head %}<meta http-equiv="refresh" content="5">{% endblock %}
+{% block content %}
+<section class="board-wrap">
+  <h2>Ranking pokoju {{ room.code }}</h2>
+
+  <table class="board">
+    <thead>
+      <tr><th>#</th><th>Gracz</th>
+          <th class="num atk">Atak</th>
+          <th class="num def">Obrona</th>
+          <th class="num total">Razem</th></tr>
+    </thead>
+    <tbody>
+      {% for r in ranking %}
+        <tr class="{{ 'me-row' if r.name == player.name }}">
+          <td class="rank">{{ loop.index }}</td>
+          <td>{{ r.name }}</td>
+          <td class="num atk">{{ r.atak }} <small>({{ r.trafienia }})</small></td>
+          <td class="num def">{{ r.obrona }} <small>({{ r.wykrycia }})</small></td>
+          <td class="num total">{{ r.razem }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="empty">Brak graczy.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted small">Atak = +10 za kazde klikniecie, ktore wywolal Twoj mail.
+     Obrona = +10 za kazde wykrycie phishingu wymierzonego w Ciebie.</p>
+</section>
+{% endblock %}

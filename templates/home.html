@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <h1>Phish<span>Wars</span></h1>
+  <p class="lede">Rzuc znajomemu wyzwanie: napisz maila, ktoremu nie oprze sie nikt.
+     On wygrywa, gdy wykryje podstep. Ty wygrywasz, gdy kliknie w link.</p>
+
+  {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+  <div class="gate">
+    <form method="post" action="/room/create" class="card join-card attack">
+      <h2>Zaloz pokoj</h2>
+      <label>Nazwa pokoju
+        <input name="room_name" placeholder="np. HackYeah Team 7" required>
+      </label>
+      <label>Twoje imie
+        <input name="name" placeholder="jak maja Cie widziec inni" required>
+      </label>
+      <button class="btn attack-btn">Utworz i wejdz</button>
+    </form>
+
+    <form method="post" action="/room/join" class="card join-card defend">
+      <h2>Dolacz do pokoju</h2>
+      <label>Kod pokoju
+        <input name="code" placeholder="np. FOX-2931" required style="text-transform:uppercase">
+      </label>
+      <label>Twoje imie
+        <input name="name" placeholder="jak maja Cie widziec inni" required>
+      </label>
+      <button class="btn defend-btn">Dolacz</button>
+    </form>
+  </div>
+
+  <p class="foot-note">Srodowisko treningowe. Wszystko dzieje sie wewnatrz aplikacji —
+     zaden mail nie wychodzi na zewnatrz, link tylko liczy klikniecie.</p>
+</section>
+{% endblock %}
