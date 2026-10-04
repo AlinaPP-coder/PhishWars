@@ -1,0 +1,2 @@
+# PhishWars
+Aplikacja na konkurs.
